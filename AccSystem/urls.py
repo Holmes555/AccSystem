@@ -13,9 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import RedirectView
+
+from accsyst.views import MyRegistrationView
 
 urlpatterns = [
+    url(r'^$', RedirectView.as_view(url='accsyst/')),
+    url(r'^accsyst/', include('accsyst.urls'), name='accsyst_index'),
+    url(r'^accsyst/accounts/login', include('registration.backends.simple.urls')),
+    url(r'^accsyst/accounts/logout', include('registration.backends.simple.urls')),
     url(r'^admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -1,0 +1,29 @@
+{% extends 'accsystem/base_not_index.html' %}
+
+{% load staticfiles %}
+
+{% block title_block %}
+    {% block head_block %}
+            - Card {{ worker.id }}
+    {% endblock head_block %}
+{% endblock title_block %}
+
+{% block not_index %}
+     <div class="panel-heading">
+        <!-- Display search results in an ordered list -->
+        <div class="panel-body">
+        <div class="list-group">
+            {% for field in worker %}
+                <div class="col-md-8" style="font-size: large;">
+                    {{ field.errors }}
+                    {{ field.help_text }}
+                    {{ field }}
+                    <br>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+    <br><br>
+{% endblock not_index %}
