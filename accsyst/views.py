@@ -74,3 +74,43 @@ class WorkerView(View):
                 pass
             context_dict['worker'] = worker
         return render(request, self.template_name, context=context_dict)
+    
+
+class ReportListView(ListView):
+    template_name = 'accsystem/report_list.html'
+    model = Report
+
+
+class ReportView(View):
+    template_name = 'accsystem/report.html'
+    model = Report
+
+    def get(self, request, *args, **kwargs):
+        context_dict = {}
+        report_id = int(kwargs['job_id'])
+        report = None
+        if report_id:
+            try:
+                report = self.model.objects.get(id=report_id)
+            except self.model.DoesNotExist:
+                pass
+            except ValueError:
+                pass
+            context_dict['report'] = report
+        return render(request, self.template_name, context=context_dict)
+
+
+class ReportFormView(FormView):
+    template_name = 'accsystem/report_form.html'
+    form_class = ReportForm
+    model = Report
+    
+    def post(self, request, *args, **kwargs):
+        context_dict = {'form': self.form_class}
+        report_form = self.form_class(data=request.POST)
+        if report_form.is_valid():
+            report = report_form.save(commit=False)
+            report.save()
+            return redirect(reverse('accsystem:report'))
+        context_dict['form'] = report_form
+        return render(request, self.template_name, context=context_dict)

@@ -1,0 +1,32 @@
+{% extends 'accsystem/base_not_index.html' %}
+
+{% load staticfiles %}
+
+{% block title_block %}
+    {% block head_block %}
+            - Reports
+    {% endblock head_block %}
+{% endblock title_block %}
+
+{% block not_index %}
+     <div class="panel-heading">
+        <!-- Display search results in an ordered list -->
+        <div class="panel-body">
+        <div class="list-group">
+        {% for report in report_list %}
+            <div class="list-group-item" style="font-size: x-large">
+            <div class="row">
+                <a class="col-md-5" href="{% url 'accsyst:report' report.id %}">Report {{ report.id }}</a>
+                <div class="col-md-7 row">
+                    <div class="col-md-2">
+                        {{ report.datetime }}
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+    <br><br>
+{% endblock not_index %}

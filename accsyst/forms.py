@@ -24,6 +24,18 @@ class CardForm(forms.ModelForm):
             raise forms.ValidationError('Enter correct working hours')
 
 
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        exclude = ['accountants']
+
+
+class AdminReportForm(forms.ModelForm):
+    class Meta:
+        model = AdminReport
+        exclude = ['accountants', 'admin']
+
+
 class UserInfoForm(forms.ModelForm):
 
     class Meta:

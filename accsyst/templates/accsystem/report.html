@@ -4,7 +4,7 @@
 
 {% block title_block %}
     {% block head_block %}
-            - Card {{ worker.id }}
+            - Report {{ report.id }}
     {% endblock head_block %}
 {% endblock title_block %}
 
@@ -13,7 +13,7 @@
         <!-- Display search results in an ordered list -->
         <div class="panel-body">
         <div class="list-group">
-            {% for field in card %}
+            {% for field in report %}
                 <div class="col-md-8" style="font-size: large;">
                     {{ field.errors }}
                     {{ field.help_text }}

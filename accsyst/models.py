@@ -38,15 +38,16 @@ class UserInfo(models.Model):
 
 
 class Report(models.Model):
-    workers = models.ManyToManyField('Worker')
-    accountants = models.ManyToManyField('Accountant')
-    bills = models.ForeignKey(Bill)
-    info = models.CharField(max_length=100, null=True)
-    comments = models.CharField(max_length=500, null=True)
+    workers = models.ManyToManyField('Worker', blank=True, null=True)
+    accountants = models.ManyToManyField('Accountant', null=True)
+    bills = models.ForeignKey(Bill, blank=True, null=True)
+    info = models.CharField(max_length=100, blank=True, null=True)
+    comments = models.CharField(max_length=500, blank=True, null=True)
+    datetime = models.DateTimeField(default=timezone.now())
 
 
 class AdminReport(Report):
-    admin = models.ManyToManyField('Admin')
+    admin = models.ManyToManyField('Admin', null=True)
 
 
 #  User profiles
