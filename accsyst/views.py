@@ -19,57 +19,57 @@ class MyRegistrationView(RegistrationView):
 
 
 class CardFormView(FormView):
-    template_name = 'accsystem/card_form.html'
+    template_name = 'accsyst/card_form.html'
     form_class = CardForm
     model = Card
 
     def post(self, request, *args, **kwargs):
-        context_dict = {'form': self.form_class}
+        context_dict = {'form': self.form_class, 'worker_id': kwargs['worker_id']}
         card_form = self.form_class(data=request.POST)
         if card_form.is_valid():
             card = card_form.save(commit=False)
             card.save()
-            return redirect(reverse('accsystem:card'))
+            return redirect(reverse('accsyst:card', kwargs={'worker_id': context_dict['worker_id']}))
         context_dict['form'] = card_form
         return render(request, self.template_name, context=context_dict)
 
 
 class CardView(FormView):
-    template_name = 'accsystem/card.html'
+    template_name = 'accsyst/card.html'
     model = UserProfile
 
     def get(self, request, *args, **kwargs):
-        context_dict = {'username': kwargs['username']}
+        context_dict = {'worker_id': kwargs['worker_id']}
         try:
-            user = User.objects.get(username=kwargs['username'])
+            user = User.objects.get(username=context_dict['worker_id'])
         except User.DoesNotExist:
-            return redirect(reverse('rast:index'))
+            return redirect(reverse('accsyst:index'))
         profile_user = self.model.objects.get_or_create(user=user)[0]
         context_dict['profile'] = profile_user
         return render(request, self.template_name, context=context_dict)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse('rast:register_profile'))
+        return redirect(reverse('accsyst:register_profile'))
 
 
 class WorkerListView(ListView):
-    template_name = 'accsystem/worker_list.html'
+    template_name = 'accsyst/worker_list.html'
     model = Worker
 
 
 class WorkerView(View):
-    template_name = 'accsystem/worker.html'
+    template_name = 'accsyst/worker.html'
     model = Worker
 
     def get(self, request, *args, **kwargs):
         context_dict = {}
-        worker_id = int(kwargs['job_id'])
+        worker_id = int(kwargs['worker_id'])
         worker = None
         if worker_id:
             try:
                 worker = self.model.objects.get(id=worker_id)
             except self.model.DoesNotExist:
-                pass
+                return redirect(reverse('accsyst:index'))
             except ValueError:
                 pass
             context_dict['worker'] = worker
@@ -77,12 +77,12 @@ class WorkerView(View):
     
 
 class ReportListView(ListView):
-    template_name = 'accsystem/report_list.html'
+    template_name = 'accsyst/report_list.html'
     model = Report
 
 
 class ReportView(View):
-    template_name = 'accsystem/report.html'
+    template_name = 'accsyst/report.html'
     model = Report
 
     def get(self, request, *args, **kwargs):
@@ -101,7 +101,7 @@ class ReportView(View):
 
 
 class ReportFormView(FormView):
-    template_name = 'accsystem/report_form.html'
+    template_name = 'accsyst/report_form.html'
     form_class = ReportForm
     model = Report
     
@@ -111,6 +111,6 @@ class ReportFormView(FormView):
         if report_form.is_valid():
             report = report_form.save(commit=False)
             report.save()
-            return redirect(reverse('accsystem:report'))
+            return redirect(reverse('accsyst:report'))
         context_dict['form'] = report_form
         return render(request, self.template_name, context=context_dict)

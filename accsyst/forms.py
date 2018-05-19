@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
 
 from .models import *
 
@@ -13,15 +14,28 @@ class BillForm(forms.ModelForm):
 
 
 class CardForm(forms.ModelForm):
+    date = forms.DateField(widget=SelectDateWidget, initial=timezone.now(), help_text='Set the date.')
+    working_hours = forms.IntegerField(help_text='Set working hours.')
+    rate = forms.IntegerField(help_text='Set the rate.', required=False)
+    fix_salary = forms.IntegerField(help_text='Set fix salary.', required=False)
+    payment = forms.ChoiceField(help_text='Set the payment.', choices=Card.PAYMENT_CHOICE)
+
     class Meta:
         model = Card
         exclude = ['extra_hours', 'day_hours', 'extra_coeff']
 
-    def clean_working_hours(self):
+    def clean(self):
+        cleaned_data = super(CardForm, self).clean()
+        rate = cleaned_data.get('rate')
+        fix_salary = cleaned_data.get('fix_salary')
         cleaned_data = super(CardForm, self).clean()
         working_hours = cleaned_data.get('working_hours')
         if working_hours < 0 or working_hours > 24:
             raise forms.ValidationError('Enter correct working hours')
+        if rate and fix_salary:
+            raise forms.ValidationError('Choose only one way')
+        if not (rate or fix_salary):
+            raise forms.ValidationError('Choose at least one way')
 
 
 class ReportForm(forms.ModelForm):

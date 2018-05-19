@@ -10,13 +10,13 @@ class Bill(models.Model):
 
 class Card(models.Model):
     date = models.DateField(default=timezone.now())
-    working_hours = models.IntegerField(null=True)
+    working_hours = models.IntegerField(blank=True, null=True)
     extra_hours = models.IntegerField(null=True)
     day_hours = 8
 
-    rate = models.IntegerField(null=True)
+    rate = models.IntegerField(blank=True, null=True)
     extra_coeff = 1.5
-    fix_salary = models.IntegerField(null=True)
+    fix_salary = models.IntegerField(blank=True, null=True)
 
     PAYMENT_CHOICE = (
         ('Csh', 'Cash'),
@@ -38,8 +38,8 @@ class UserInfo(models.Model):
 
 
 class Report(models.Model):
-    workers = models.ManyToManyField('Worker', blank=True, null=True)
-    accountants = models.ManyToManyField('Accountant', null=True)
+    workers = models.ManyToManyField('Worker', blank=True)
+    accountants = models.ManyToManyField('Accountant')
     bills = models.ForeignKey(Bill, blank=True, null=True)
     info = models.CharField(max_length=100, blank=True, null=True)
     comments = models.CharField(max_length=500, blank=True, null=True)
@@ -47,7 +47,7 @@ class Report(models.Model):
 
 
 class AdminReport(Report):
-    admin = models.ManyToManyField('Admin', null=True)
+    admin = models.ManyToManyField('Admin')
 
 
 #  User profiles

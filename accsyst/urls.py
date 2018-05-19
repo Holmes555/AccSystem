@@ -6,7 +6,7 @@ from . import views
 app_name = 'accsyst'
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='accsystem/index.html'), name='index'),
+    url(r'^$', TemplateView.as_view(template_name='accsyst/index.html'), name='index'),
     url(r'^worker_list/$', views.WorkerListView.as_view(), name='worker_list'),
     url(r'^worker/(?P<worker_id>\d+)/$', views.WorkerView.as_view(), name='worker'),
     url(r'^card/(?P<worker_id>\d+)/$', views.CardView.as_view(), name='card'),

@@ -1,10 +1,10 @@
-{% extends 'accsystem/base_not_index.html' %}
+{% extends 'accsyst/base_not_index.html' %}
 
 {% load staticfiles %}
 
 {% block title_block %}
     {% block head_block %}
-            - Workers
+            - Reports
     {% endblock head_block %}
 {% endblock title_block %}
 
@@ -13,13 +13,13 @@
         <!-- Display search results in an ordered list -->
         <div class="panel-body">
         <div class="list-group">
-        {% for worker in worker_list %}
+        {% for report in report_list %}
             <div class="list-group-item" style="font-size: x-large">
             <div class="row">
-                <a class="col-md-5" href="{% url 'accsyst:worker' worker.id %}">{{ worker.name }}</a>
+                <a class="col-md-5" href="{% url 'accsyst:report' report.id %}">Report {{ report.id }}</a>
                 <div class="col-md-7 row">
                     <div class="col-md-2">
-                        {{ worker.id }}
+                        {{ report.datetime }}
                     </div>
                 </div>
             </div>
