@@ -11,7 +11,7 @@ class Bill(models.Model):
 class Card(models.Model):
     date = models.DateField(default=timezone.now())
     working_hours = models.IntegerField(blank=True, null=True)
-    extra_hours = models.IntegerField(null=True)
+    extra_hours = models.IntegerField(default=0, blank=True, null=True)
     day_hours = 8
 
     rate = models.IntegerField(blank=True, null=True)
@@ -31,10 +31,11 @@ class Card(models.Model):
 
 
 class UserInfo(models.Model):
+    name = models.CharField(max_length=20, null=True)
     surname = models.CharField(max_length=20, null=True)
     age = models.IntegerField(null=True)
     address = models.CharField(max_length=100, null=True)
-    picture = models.ImageField(upload_to='profile_images', null=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True, null=True)
 
 
 class Report(models.Model):
@@ -53,18 +54,22 @@ class AdminReport(Report):
 #  User profiles
 
 
-class UserProfile(User):
-    card = models.OneToOneField(Card)
+class UserProfile(models.Model):
+    card = models.OneToOneField(Card, blank=True, null=True)
     user_info = models.OneToOneField(UserInfo)
+
+    class Meta:
+        abstract = True
 
 
 class Worker(UserProfile):
-    accountant_ptr = models.ForeignKey('Accountant', null=True)
+    accountant_ptr = models.ForeignKey('Accountant', blank=True, null=True)
 
 
-class Accountant(UserProfile):
+class Accountant(models.Model):
+    user = models.OneToOneField(User)
     admin_ptr = models.ForeignKey('Admin', null=True)
 
 
-class Admin(UserProfile):
-    pass
+class Admin(models.Model):
+    user = models.OneToOneField(User)

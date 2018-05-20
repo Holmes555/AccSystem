@@ -13,17 +13,53 @@
         <!-- Display search results in an ordered list -->
         <div class="panel-body">
         <div class="list-group">
-            {% for field in worker %}
-                <div class="col-md-8" style="font-size: large;">
-                    {{ field.errors }}
-                    {{ field.help_text }}
-                    {{ field }}
-                    <br>
-                </div>
-                <hr>
-            {% endfor %}
+        <div class="form-group">
+        <h2>{{ worker.user_info.name }} {{ worker.user_info.surname }}</h2>
+        <div class="row">
+            <div class="col-md">
+                <p><h5>
+                    Age: {{ worker.user_info.age }}
+                </h5>
+                <p><h5>
+                    Address: {{ worker.user_info.address }}
+                </h5>
+                <p><h5>
+                    {% if worker.user_info.picture %}
+                        <img src="{{ MEDIA_URL }}{{ worker.user_info.picture.url }}"
+                             width="300" height="300"/>
+                    {% endif %}
+                </h5>
+            </div>
+            <div class="col-md">
+                {% if worker.card %}
+                    <p><h5>
+                        Date: {{ worker.card.date }}
+                    </h5>
+                    <p><h5>
+                        Working hours: {{ worker.card.working_hours }}
+                    </h5>
+                    <p><h5>
+                        {% if worker.card.extra_hours > 0 %}
+                            Extra hours: {{ worker.card.extra_hours }}
+                        {% endif %}
+                    </h5>
+                    <p><h5>
+                        Rate: {{ worker.card.rate }}
+                    </h5>
+                    <p><h5>
+                        Fix Salary: {{ worker.card.fix_salary }}
+                    </h5>
+                    <p><h5>
+                        Payment: {{ worker.card.get_payment_display }}
+                    </h5>
+                {% endif %}
+            </div>
         </div>
         </div>
+        </div>
+        <br>
+        <a class="btn btn-primary" href="{% url 'accsyst:update_worker' worker.id %}">Update worker</a>
+        <a class="btn btn-primary" href="{% url 'accsyst:card_form' worker.id %}">Update card</a>
     </div>
     <br><br>
 {% endblock not_index %}

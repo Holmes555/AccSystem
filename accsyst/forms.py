@@ -51,7 +51,12 @@ class AdminReportForm(forms.ModelForm):
 
 
 class UserInfoForm(forms.ModelForm):
+    name = forms.CharField(help_text='Enter name.')
+    surname = forms.CharField(help_text='Enter surname.')
+    age = forms.IntegerField(help_text='Enter age.')
+    address = forms.CharField(help_text='Enter address.')
+    picture = forms.ImageField(help_text='Enter picture (optionally).', required=False)
 
     class Meta:
-        model = Card
+        model = UserInfo
         fields = '__all__'

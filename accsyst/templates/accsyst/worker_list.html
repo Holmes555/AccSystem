@@ -11,22 +11,51 @@
 {% block not_index %}
      <div class="panel-heading">
         <!-- Display search results in an ordered list -->
-        <div class="panel-body">
-        <div class="list-group">
+     <a class="btn btn-primary" href="{% url 'accsyst:add_worker' %}">Add worker</a>
+     <br><br>
+        <div class="panel-body list-group">
+
+            <div class="bg-dark" style="font-size: x-large; color: white" id="header">
+                <div class="row px-3">
+                    <div class=" col-md-5" id="name">
+                        Worker name
+                    </div>
+                    <div class="col-md-7 row">
+                        <div class="text-center col-md-5" id="id">
+                            Worker id
+                        </div>
+                        <div class="text-center col-md-7">
+                            <input id="select_all" type="checkbox" onclick="select_all()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <form id="select_form">
         {% for worker in worker_list %}
             <div class="list-group-item" style="font-size: x-large">
             <div class="row">
-                <a class="col-md-5" href="{% url 'accsyst:worker' worker.id %}">{{ worker.name }}</a>
+                <a class="col-md-5" href="{% url 'accsyst:worker' worker.id %}">
+                    {{ worker.user_info.name }} {{ worker.user_info.surname }}
+                </a>
                 <div class="col-md-7 row">
-                    <div class="col-md-2">
+                    <div class="text-center col-md-5">
                         {{ worker.id }}
+                    </div>
+                    <div class="text-center col-md-7">
+                        <input class="chbox" type="checkbox" onclick="select_worker()" value="{{ worker.id }}">
                     </div>
                 </div>
             </div>
             </div>
         {% endfor %}
+        </form>
         </div>
         </div>
     </div>
     <br><br>
 {% endblock not_index %}
+
+{% block scripts %}
+    <script src="{% static 'js/selection.js' %}?rand=12345"></script>
+{% endblock scripts %}
